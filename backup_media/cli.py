@@ -45,6 +45,8 @@ from pathlib import Path
 from PIL import Image
 from PIL.ExifTags import TAGS
 
+__version__ = "1.0.0"
+
 IMAGE_EXTENSIONS = {'.jpg', '.jpeg', '.png', '.gif', '.bmp', '.tiff'}
 VIDEO_EXTENSIONS = {'.mp4', '.mov', '.avi', '.mkv', '.wmv', '.flv'}
 
@@ -198,6 +200,7 @@ def main():
     parser.add_argument("backup_path", help="Path to the backup destination")
     parser.add_argument("-n", "--dry-run", action="store_true", help="Show what would be done without making changes")
     parser.add_argument("--move", action="store_true", help="Move files instead of copying them")
+    parser.add_argument("--version", action="version", version=f"%(prog)s {__version__}", help="Show the version of the script")
     args = parser.parse_args()
 
     backup_media_files(args.sd_card_path, args.backup_path, dry_run=args.dry_run, move_files=args.move)
