@@ -1,6 +1,6 @@
 [project]
 name = "backup-media"
-version = "1.0.0"
+version = "1.1.0"
 description = "Backup photos and videos from SD card to year-organized folders"
 authors = [
     {name = "Frédéric Gierlinger", email = "github@gierlinger.xyz"}

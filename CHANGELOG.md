@@ -1,3 +1,9 @@
+## v1.1.0 (2025-04-24)
+
+### Feat
+
+- add version flag to CLI for displaying script version
+
 ## v1.0.0 (2025-04-23)
 
 ### Feat
