@@ -1,0 +1,21 @@
+[project]
+name = "backup-media"
+version = "0.1.0"
+description = "Backup photos and videos from SD card to year-organized folders"
+authors = [
+    {name = "Frédéric Gierlinger", email = "github@gierlinger.xyz"}
+]
+license = "MIT"
+dependencies = [
+    "pillow"
+]
+
+[project.scripts]
+backup-media = "backup_media.cli:main"
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.pylint]
+max-line-length = 120

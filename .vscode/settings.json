@@ -1,0 +1,15 @@
+{
+    "cSpell.words": [
+        "getexif"
+    ],
+    "python.testing.pytestEnabled": false,
+    "python.testing.unittestEnabled": true,
+    "python.testing.unittestArgs": [
+        "-v",
+        "-b",
+        "-s",
+        ".",
+        "-p",
+        "*test*.py",
+    ],
+}
