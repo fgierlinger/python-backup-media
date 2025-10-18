@@ -46,7 +46,7 @@ from pathlib import Path
 from PIL import Image
 from PIL.ExifTags import TAGS
 
-__version__ = "1.1.0"
+__version__ = "1.2.0"
 
 IMAGE_EXTENSIONS = {'.jpg', '.jpeg', '.png', '.gif', '.bmp', '.tiff'}
 VIDEO_EXTENSIONS = {'.mp4', '.mov', '.avi', '.mkv', '.wmv', '.flv'}

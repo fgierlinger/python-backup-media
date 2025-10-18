@@ -1,3 +1,9 @@
+## v1.2.0 (2025-10-18)
+
+### Feat
+
+- add deduplication option to backup_media_files function
+
 ## v1.1.0 (2025-04-24)
 
 ### Feat
