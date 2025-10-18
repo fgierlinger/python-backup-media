@@ -112,7 +112,7 @@ def get_file_year(path):
         return datetime.now().year
 
 
-def backup_media_files(sd_card_path, backup_path, dry_run=False, move_files=False):
+def backup_media_files(sd_card_path, backup_path, dry_run=False, move_files=False, deduplicate=False):
     """
     Backs up media files (images and videos) from an SD card to a specified backup directory.
     This function scans the provided SD card path for files, filters them based on their extensions,
@@ -122,6 +122,7 @@ def backup_media_files(sd_card_path, backup_path, dry_run=False, move_files=Fals
         backup_path (str or Path): The destination path where the media files will be backed up.
         dry_run (bool, optional): If True, performs a dry run without making any changes. Defaults to False.
         move_files (bool, optional): If True, moves the files instead of copying them. Defaults to False.
+        deduplicate (bool, optional): If True, appends a unique string to files that already exists in the target location. Defaults to False.
     Returns:
         None
     Notes:
