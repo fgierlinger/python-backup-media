@@ -37,6 +37,7 @@ Usage:
     python cli.py /path/to/sd_card /path/to/backup --dry-run
     ```
 """
+import hashlib
 import logging
 import shutil
 import argparse
@@ -168,8 +169,13 @@ def backup_media_files(sd_card_path, backup_path, dry_run=False, move_files=Fals
 
         target_dir.mkdir(parents=True, exist_ok=True)
         if target_file.exists():
-            print(f"File already exists, skipping: {target_file}")
-            continue
+            if not deduplicate:
+                print(f"File already exists, skipping: {target_file}")
+                continue
+            suffix = hashlib.sha1(target_file.name.encode()).hexdigest()[:7]
+            new_target_file = target_dir / f"{target_file.stem}_{suffix}{target_file.suffix}"
+            print(f"Found duplicate {target_file.name}, renaming to {new_target_file.name}")
+            target_file = new_target_file
 
         print(f"{'Moving' if move_files else 'Copying'}: {file} -> {target_file}")
         if move_files:
@@ -202,6 +208,7 @@ def main():
     parser.add_argument("-n", "--dry-run", action="store_true", help="Show what would be done without making changes")
     parser.add_argument("--move", action="store_true", help="Move files instead of copying them")
     parser.add_argument("--version", action="version", version=f"%(prog)s {__version__}", help="Show the version of the script")
+    parser.add_argument("--no-deduplicate", action="store_false", dest="deduplicate", help="Do not deduplicate files with the same name")
     args = parser.parse_args()
 
-    backup_media_files(args.sd_card_path, args.backup_path, dry_run=args.dry_run, move_files=args.move)
+    backup_media_files(args.sd_card_path, args.backup_path, dry_run=args.dry_run, move_files=args.move, deduplicate=args.deduplicate)
