@@ -1,6 +1,7 @@
 # pylint: disable=missing-module-docstring, missing-class-docstring, missing-function-docstring
+import shutil
+import tempfile
 import unittest
-from unittest import mock
 from unittest.mock import patch, MagicMock
 from pathlib import Path
 from datetime import datetime
@@ -189,3 +190,24 @@ class TestCLI(unittest.TestCase):
             with patch("backup_media.cli.Path.rglob", return_value=[mock_file]):
                 backup_media_files("/sd_card", "/backup", dry_run=False, move_files=False)
                 mock_logerror.assert_called_with("file extension '%s' not in IMAGE_EXTENSIONS nor in VIDEO_EXTENSIONS", ".txt")
+
+    def test_backup_media_files_deduplicate(self):
+        td_dest = Path(tempfile.mkdtemp())
+        td_src = Path(tempfile.mkdtemp())
+        mock_year = 2023
+        Path(td_dest / str(mock_year)).mkdir(parents=True, exist_ok=True)
+
+        # create two files in the source directory and copy one to the destination to simulate a duplicate
+        (_, filename) = tempfile.mkstemp(dir=td_src, suffix=".jpg", text=True)
+        shutil.copy2(filename, td_dest / str(mock_year) / Path(filename).name)
+        tempfile.mkstemp(dir=td_src, suffix=".jpg", text=True)
+
+        with patch("backup_media.cli.get_file_year", return_value=mock_year):
+            backup_media_files(td_src, td_dest, dry_run=False, move_files=False, deduplicate=True)
+
+        len_td_src = len(list(td_src.rglob("*.jpg")))
+        len_td_dest = len(list(td_dest.rglob("*.jpg")))
+        self.assertEqual(len_td_dest, len_td_src+1) # +1 because one file was duplicated with a new name
+
+        shutil.rmtree(td_src)
+        shutil.rmtree(td_dest)
